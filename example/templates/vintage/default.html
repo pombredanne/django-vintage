@@ -1,0 +1,13 @@
+{% spaceless %}<html>
+<head>
+    <title>{{ object.title }}</title>
+</head>
+<body>
+{{ object.content }}
+<p>{{ object.metadata.page_id }}</p>
+<p>{{ object.metadata.description }}</p>
+<p>{{ object.metadata.image }}</p>
+<p>{{ object.metadata.keywords }}</p>
+<p>{{ object.metadata.author }}</p>
+</body>
+</html>{% endspaceless %}
