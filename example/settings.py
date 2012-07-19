@@ -116,5 +116,5 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'vintage',
-    'genericm2m',
+    # 'genericm2m',
 )

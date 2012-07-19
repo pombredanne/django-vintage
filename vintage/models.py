@@ -5,8 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 
 from .settings import METADATA_FORM
-from formfield import ModelFormField
-from genericm2m.models import RelatedObjectsDescriptor
+from .compatible import ModelFormField
+# from genericm2m.models import RelatedObjectsDescriptor
+
 
 class ArchivedPage(models.Model):
     url = models.CharField(
@@ -28,7 +29,7 @@ class ArchivedPage(models.Model):
             isn't provided, the system will use 'vintage/default.html'."""))
     metadata = ModelFormField(METADATA_FORM)
 
-    related = RelatedObjectsDescriptor()
+    # related = RelatedObjectsDescriptor()
 
     class Meta:
         verbose_name = _('archived page')

@@ -1,5 +1,6 @@
 from django import forms
 
+
 class MetadataForm(forms.Form):
     page_id = forms.CharField(required=False)
     description = forms.CharField(required=False)

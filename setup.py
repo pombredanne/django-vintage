@@ -9,7 +9,7 @@ def read_file(filename):
         return open(filepath).read()
     except IOError:
         return ''
-    
+
 def get_readme():
     """Return the README file contents. Supports text,rst, and markdown"""
     for name in ('README','README.rst','README.md'):
@@ -23,7 +23,7 @@ DESC = " ".join(__import__('vintage').__doc__.splitlines()).strip()
 setup(
     name = "django-vintage",
     version = __import__('vintage').get_version().replace(' ', '-'),
-    url = 'http://callowayproject.com/',
+    url = 'http://callowayproject.com/projects/',
     author = 'coordt',
     author_email = 'coreyoordt@gmail.com',
     description = DESC,
