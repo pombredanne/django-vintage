@@ -85,7 +85,7 @@ from .generic2 import genericm2m_inlineformset_factory
 class ArchivedPageAdmin(admin.ModelAdmin):
     form = ArchivedpageForm
     fieldsets = (
-        (None, {'fields': ('url', 'title', 'content', )}),
+        (None, {'fields': ('url', 'original_url', 'title', 'content', )}),
         (_('Advanced options'), {'classes': ('collapse',), 'fields': ('metadata', 'template_name')}),
     )
     list_display = ('url', 'title')

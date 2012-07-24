@@ -84,22 +84,17 @@ class ArchivedPage(models.Model):
         links = soup.findAll('a')
         for tag in links:
             if not tag.has_key('href'):
-                print "No href"
                 continue
             if tag['href'].startswith('{%'):
-                print "Already done."
                 continue
-            print "Found outdated link: %s" % tag['href']
             if tag['href'].startswith('javascript'):
-                print "javascript url"
                 continue
             url = self.relative_to_full_url(tag['href'])
             try:
                 ap = ArchivedPage.objects.get(original_url=url)
-                url = "{% url vintage_detail url=%s %}" % ap.url
+                url = "{%% url vintage_detail url=%s %%}" % ap.url
             except ArchivedPage.DoesNotExist:
                 pass
-            print "Setting it to %s" % url
             tag['href'] = url
         self.content = str(soup.prettify())
         if save:
@@ -115,9 +110,7 @@ class ArchivedPage(models.Model):
         images = soup.findAll('img')
         for tag in images:
             if not tag['src'].startswith('{{'):
-                print "Found outdated image: %s" % tag['src']
                 url = self.get_original_image(tag['src'])
-                print "Setting it to %s" % url
                 tag['src'] = url
         self.content = str(soup.prettify())
         if save:
@@ -147,7 +140,8 @@ class ArchivedPage(models.Model):
     def save(self, *args, **kwargs):
         super(ArchivedPage, self).save(*args, **kwargs)
         self.update_images(save=False)
-        self.update_links(save=True)
+        self.update_links(save=False)
+        super(ArchivedPage, self).save(*args, **kwargs)
 
 
 def get_upload_path(instance, filename):
