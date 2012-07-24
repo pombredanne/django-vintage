@@ -30,9 +30,25 @@ def process_url(url, **kwargs):
         html = urlopen(url).read()
     except URLError, e:
         print "Couldn't get %s due to %s" % (url, e)
+
+    soup = BeautifulSoup(html)
+    metadata = {}
+    for tag in soup.head.contents:
+        if hasattr(tag, 'name'):
+            if tag.name == 'title':
+                metadata['title'] = tag.string
+            elif tag.name == 'meta':
+                if tag.haskey('name'):
+                    metadata[tag['name']] = tag['content']
+                else:
+                    metadata[tag['http-equiv']] = tag['content']
     if kwargs:
         if 'name' not in kwargs:
             kwargs['name'] = None
-        soup = BeautifulSoup(html)
-        return soup.findAll(**kwargs)
-    return html
+        result = soup.findAll(**kwargs)
+    else:
+        # Of course, we could use soup.body, but we use the same form as above
+        # consistency
+        result = soup.findAll('body', limit=1)
+    result.metadata = metadata.copy()
+    return result
