@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from django.conf import settings
+from django.template.loader import Template, Context
 
 from .models import ArchivedPage
 
@@ -49,6 +50,6 @@ def render_archivedpage(request, url):
     # mark the title and content as already safe (since they are raw HTML
     # content in the first place).
     apage.title = mark_safe(apage.title)
-    apage.content = mark_safe(apage.content)
+    apage.content = mark_safe(Template(apage.content).render(Context({})))
 
     return render_to_response(templates, {'object': apage}, RequestContext(request))

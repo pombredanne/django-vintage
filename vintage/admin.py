@@ -6,7 +6,7 @@ from functools import partial
 from django import forms
 
 from .forms import ArchivedpageForm
-from .models import ArchivedPage
+from .models import ArchivedPage, ArchivedFile
 # from genericm2m.models import RelatedObject
 from .generic2 import genericm2m_inlineformset_factory
 
@@ -96,4 +96,8 @@ class ArchivedPageAdmin(admin.ModelAdmin):
         js = ('js/genericcollections.js',)
 
 
+class ArchivedFileAdmin(admin.ModelAdmin):
+    list_display = ('archivedpage', 'original_url')
+
 admin.site.register(ArchivedPage, ArchivedPageAdmin)
+admin.site.register(ArchivedFile, ArchivedFileAdmin)
