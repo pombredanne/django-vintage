@@ -24,6 +24,8 @@ Creating a page manually
 
 #. Enter the page's title.
 
+#. Enter the original URL of the page. The original URL is used in updating links and images.
+
 #. View the source of the page you are archiving.
 
 #. Select the appropriate HTML content (such as everything between the ``<body>`` tags).

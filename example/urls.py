@@ -13,3 +13,8 @@ urlpatterns = urlpatterns + patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
     ) if settings.DEBUG else urlpatterns
+
+urlpatterns = urlpatterns + patterns('',
+    (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),
+    )
