@@ -62,7 +62,7 @@ class ArchivedPage(models.Model):
             url = urlparse.urljoin(self.original_url, parsed.path)
         return url
 
-    def get_internal_links(self):
+    def get_links(self):
         """
         Return all the hrefs of all the <a> tags in the content
         """
@@ -72,6 +72,14 @@ class ArchivedPage(models.Model):
         links = soup.findAll('a')
         hrefs = [tag['href'] for tag in links if tag.has_key('href')]
         return hrefs
+
+    def get_external_links(self):
+        """
+        Update all the links, and then return any URL that is external
+        """
+        self.update_links(save=True)
+        links = self.get_links()
+        return [i for i in links if i.startswith('http')]
 
     def update_links(self, save=True):
         """
@@ -138,7 +146,8 @@ class ArchivedPage(models.Model):
         return '{{ STATIC_URL }}%s' % af.content.url
 
     def save(self, *args, **kwargs):
-        super(ArchivedPage, self).save(*args, **kwargs)
+        if not self.id:
+            super(ArchivedPage, self).save(*args, **kwargs)
         self.update_images(save=False)
         self.update_links(save=False)
         super(ArchivedPage, self).save(*args, **kwargs)

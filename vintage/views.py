@@ -24,7 +24,7 @@ def get_templates_from_path(path):
     bits = path.strip('/').split('/')
     templates = []
     for i in range(len(bits), 0, -1):
-        templates.append('/vintage/%s.html' % '/'.join(bits[:i]))
+        templates.append('vintage/%s.html' % '/'.join(bits[:i]))
     return templates
 
 

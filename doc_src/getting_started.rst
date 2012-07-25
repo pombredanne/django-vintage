@@ -7,8 +7,34 @@ Getting Started
    :local:
    :backlinks: top
 
+
+Installation
+============
+
+Installation is easy using ``pip``.
+
+.. code-block:: bash
+
+    pip install django-vintage
+
+Then add ``'vintage'`` to ``INSTALLED_APPS`` in your project's ``settings.py``
+
+
+.. _setting-it-up:
+
 Setting it up
 =============
+
+#. Create an entry in your ``urls.py`` for all your archived pages:
+
+    .. code-block:: python
+
+        urlpatterns = patterns('',
+            # ...
+            (r'^archive/', include('vintage.urls')),
+            # ...
+        )
+
 
 #. Create a directory called ``vintage`` in your template directory
 

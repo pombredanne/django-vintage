@@ -20,7 +20,6 @@ Contents
    :maxdepth: 2
    :glob:
 
-   installation
    getting_started
    templates
    metadata

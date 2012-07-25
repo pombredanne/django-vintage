@@ -7,8 +7,34 @@ Getting Started
    :local:
    :backlinks: top
 
+
+Installation
+============
+
+Installation is easy using ``pip``.
+
+.. code-block:: bash
+
+    pip install django-vintage
+
+Then add ``'vintage'`` to ``INSTALLED_APPS`` in your project's ``settings.py``
+
+
+.. _setting-it-up:
+
 Setting it up
 =============
+
+#. Create an entry in your ``urls.py`` for all your archived pages:
+
+    .. code-block:: python
+
+        urlpatterns = patterns('',
+            # ...
+            (r'^archive/', include('vintage.urls')),
+            # ...
+        )
+
 
 #. Create a directory called ``vintage`` in your template directory
 
@@ -24,6 +50,8 @@ Creating a page manually
 
 #. Enter the page's title.
 
+#. Enter the original URL of the page. The original URL is used in updating links and images.
+
 #. View the source of the page you are archiving.
 
 #. Select the appropriate HTML content (such as everything between the ``<body>`` tags).
@@ -35,19 +63,12 @@ Creating a page manually
 #. Enter in any of the page's metadata fields: ``page_id``, ``image``, ``description``, ``keywords``, and ``author``.
 
 
-Creating a page programatically
-===============================
-
-using code
-
+For the future
+==============
 
 Importing a page
-================
+----------------
 
 Need: URL and CSS selector (like ``body`` or ``#main-content``)
 Does: Loads the page, imports the content based on the CSS selector, sets the title, URL and metadata fields based on the page attributes.
 
-How the metadata fields work
-============================
-
-The metadata fields, ``page_id``, ``image``, ``description``, ``keywords``, and ``author``, get included in the template context for rendering in any ``<meta>`` tags.
