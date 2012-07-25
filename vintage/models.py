@@ -93,11 +93,13 @@ class ArchivedPage(models.Model):
         for tag in links:
             if not tag.has_key('href'):
                 continue
-            if tag['href'].startswith('{%'):
+
+            href = tag['href'].strip()
+            if href.startswith('{'):
                 continue
-            if tag['href'].startswith('javascript'):
+            if href.startswith('javascript'):
                 continue
-            url = self.relative_to_full_url(tag['href'])
+            url = self.relative_to_full_url(href)
             try:
                 ap = ArchivedPage.objects.get(original_url=url)
                 url = "{%% url vintage_detail url=%s %%}" % ap.url
@@ -117,8 +119,9 @@ class ArchivedPage(models.Model):
         soup = BeautifulSoup(self.content)
         images = soup.findAll('img')
         for tag in images:
-            if not tag['src'].startswith('{{'):
-                url = self.get_original_image(tag['src'])
+            src = tag['src'].strip()
+            if not src.startswith('{'):
+                url = self.get_original_image(src)
                 tag['src'] = url
         self.content = str(soup.prettify())
         if save:
@@ -131,8 +134,8 @@ class ArchivedPage(models.Model):
         """
         from urllib2 import urlopen, URLError, urlparse
         from django.core.files.base import ContentFile
-        parsed = urlparse.urlparse(path)
-        path = self.relative_to_full_url(path)
+        parsed = urlparse.urlparse(path.strip())
+        path = self.relative_to_full_url(path.strip())
         try:
             af = self.files.get(original_url=path)
         except ArchivedFile.DoesNotExist:
