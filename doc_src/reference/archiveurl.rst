@@ -18,16 +18,17 @@ Importing a page with ``process_url``
 All kwargs are passed to BeautifulSoup's ``findAll`` method. Valid keyword args:
 
 **name**
-    restricts the set of tags by name. examples:
-    name='b'
-    name=re.compile('^b')
-    name=['title', 'p']
-    name={'title': True, 'p': True}
-    name=True  # this returns all tags. Useful when limiting by attrs
-    name=lambda tag: len(tag.attrs) == 2
+    Restricts the set of tags by name. examples::
+
+        name='b'
+        name=re.compile('^b')
+        name=['title', 'p']
+        name={'title': True, 'p': True}
+        name=True  # this returns all tags. Useful when limiting by attrs
+        name=lambda tag: len(tag.attrs) == 2
 
 **attrs**
-    a dictionary that acts just like the BeautifulSoup keyword arguments,
+    A dictionary that acts just like the BeautifulSoup keyword arguments,
     but works for situations where there are already function arguments with
     the same name (like ``name``), or are python keywords (like ``class``).
 

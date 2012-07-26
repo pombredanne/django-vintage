@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Importing a page with process_url &mdash; django-vintage v0.1b14 documentation</title>
+    <title>Importing a page with process_url &mdash; django-vintage v0.1 documentation</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1b14',
+        VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,13 +21,13 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="django-vintage v0.1b14 documentation" href="../index.html" />
+    <link rel="top" title="django-vintage v0.1 documentation" href="../index.html" />
     <link rel="up" title="Reference" href="index.html" />
     <link rel="prev" title="Model Reference" href="models.html" /> 
   </head>
   <body>
 <div id="docstitle">
-	<p>django-vintage v0.1b14 documentation</p>
+	<p>django-vintage v0.1 documentation</p>
 </div>
 <div id="header">
 	<div id="title"><h1>Importing a page with process_url</h1></div>
@@ -112,15 +112,18 @@
 <p>All kwargs are passed to BeautifulSoup&#8217;s <tt class="docutils literal"><span class="pre">findAll</span></tt> method. Valid keyword args:</p>
 <dl class="docutils">
 <dt><strong>name</strong></dt>
-<dd>restricts the set of tags by name. examples:
-name=&#8217;b&#8217;
-name=re.compile(&#8216;^b&#8217;)
-name=[&#8216;title&#8217;, &#8216;p&#8217;]
-name={&#8216;title&#8217;: True, &#8216;p&#8217;: True}
-name=True  # this returns all tags. Useful when limiting by attrs
-name=lambda tag: len(tag.attrs) == 2</dd>
+<dd><p class="first">Restricts the set of tags by name. examples:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">name</span><span class="o">=</span><span class="s">&#39;b&#39;</span>
+<span class="n">name</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;^b&#39;</span><span class="p">)</span>
+<span class="n">name</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;p&#39;</span><span class="p">]</span>
+<span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;p&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="n">name</span><span class="o">=</span><span class="bp">True</span>  <span class="c"># this returns all tags. Useful when limiting by attrs</span>
+<span class="n">name</span><span class="o">=</span><span class="k">lambda</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</dd>
 <dt><strong>attrs</strong></dt>
-<dd>a dictionary that acts just like the BeautifulSoup keyword arguments,
+<dd>A dictionary that acts just like the BeautifulSoup keyword arguments,
 but works for situations where there are already function arguments with
 the same name (like <tt class="docutils literal"><span class="pre">name</span></tt>), or are python keywords (like <tt class="docutils literal"><span class="pre">class</span></tt>).</dd>
 <dt><strong>recursive</strong></dt>
