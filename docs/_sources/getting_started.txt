@@ -40,6 +40,13 @@ Setting it up
 
 #. Create a new template called ``default.html`` in that directory
 
+#. The template receives an ``object`` context variable that contains the :py:class:`ArchivedPage` instance. Here's a basic example:
+
+   .. literalinclude:: includes/default_tmpl.html
+      :linenos:
+      :language: django
+
+
 
 Creating a page manually
 ========================
@@ -63,12 +70,10 @@ Creating a page manually
 #. Enter in any of the page's metadata fields: ``page_id``, ``image``, ``description``, ``keywords``, and ``author``.
 
 
-For the future
-==============
+Importing a page programatically
+================================
 
-Importing a page
-----------------
+Django Vintage provides a method of retreiving a URL and saving it and the files to which it links. The example code below reads URLs from a file and extracts a specific part of the document. Then it runs it through a function to strip out additional parts of the document it doesn't want, such as copyright information that is already in the template, and ``form``\ s and ``script``\ s. See :ref:`process_url` for more information.
 
-Need: URL and CSS selector (like ``body`` or ``#main-content``)
-Does: Loads the page, imports the content based on the CSS selector, sets the title, URL and metadata fields based on the page attributes.
-
+.. literalinclude:: includes/demo_import.py
+   :linenos:
