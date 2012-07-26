@@ -97,7 +97,9 @@ class ArchivedPageAdmin(admin.ModelAdmin):
 
 
 class ArchivedFileAdmin(admin.ModelAdmin):
-    list_display = ('archivedpage', 'original_url')
+    fields = ['original_url', 'content', ]
+    list_display = ('original_url', )
+    search_fields = ('original_url', )
 
 admin.site.register(ArchivedPage, ArchivedPageAdmin)
 admin.site.register(ArchivedFile, ArchivedFileAdmin)

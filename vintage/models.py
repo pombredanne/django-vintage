@@ -137,15 +137,16 @@ class ArchivedPage(models.Model):
         parsed = urlparse.urlparse(path.strip())
         path = self.relative_to_full_url(path.strip())
         try:
-            af = self.files.get(original_url=path)
+            af = ArchivedFile.objects.get(original_url=path)
         except ArchivedFile.DoesNotExist:
             try:
                 file_content = urlopen(path).read()
-                af = self.files.create(original_url=path)
+                af = ArchivedFile(original_url=path)
+                af.save()
                 af.content.save(os.path.basename(parsed.path), ContentFile(file_content))
             except URLError:
                 return path
-
+        self.files.add(af)
         return '{{ STATIC_URL }}%s' % af.content.url
 
     def save(self, *args, **kwargs):
@@ -160,8 +161,13 @@ def get_upload_path(instance, filename):
     """
     Return the path based on the primary_key of the related page
     """
+    from urlparse import urlparse
+    parsed = urlparse(instance.original_url)
     directory_name = os.path.normpath(
-        os.path.join('vintage', str(instance.archivedpage.id))
+        os.path.join(
+            'vintage',
+            parsed.netloc,
+            os.path.dirname(parsed.path).strip('/'))
     )
     new_filename = os.path.normpath(
         instance.content.storage.get_valid_name(
@@ -173,10 +179,12 @@ class ArchivedFile(models.Model):
     """
     A non-html file used in an Archived Page, such as a file
     """
-    archivedpage = models.ForeignKey(ArchivedPage, related_name='files')
+    archivedpages = models.ManyToManyField(ArchivedPage, related_name='files')
     original_url = models.CharField(
         _('original URL'),
-        max_length=255)
+        max_length=255,
+        unique=True)
     content = models.FileField(
+        max_length=255,
         upload_to=get_upload_path,
         storage=STORAGE())
