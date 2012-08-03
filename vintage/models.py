@@ -102,7 +102,7 @@ class ArchivedPage(models.Model):
             url = self.relative_to_full_url(href)
             try:
                 ap = ArchivedPage.objects.get(original_url=url)
-                url = "{%% url vintage_detail url=%s %%}" % ap.url
+                url = "{%% url vintage_detail url='%s' %%}" % ap.url
             except ArchivedPage.DoesNotExist:
                 pass
             tag['href'] = url
