@@ -1,14 +1,12 @@
-from __future__ import unicode_literals
-
 import os
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-# from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 
-from .settings import METADATA_FORM, STORAGE
+from .settings import METADATA_FORM, STORAGE, RELATIONS
 from .compatible import ModelFormField
-# from genericm2m.models import RelatedObjectsDescriptor
 
 
 class ArchivedPage(models.Model):
@@ -37,8 +35,6 @@ class ArchivedPage(models.Model):
         help_text=_("""Example: 'vintage/contact_page.html'. If this
             isn't provided, the system will use 'vintage/default.html'."""))
     metadata = ModelFormField(METADATA_FORM)
-
-    # related = RelatedObjectsDescriptor()
 
     class Meta:
         verbose_name = _('archived page')
@@ -102,7 +98,7 @@ class ArchivedPage(models.Model):
             url = self.relative_to_full_url(href)
             try:
                 ap = ArchivedPage.objects.get(original_url=url)
-                url = "{%% url vintage_detail url=%s %%}" % ap.url
+                url = "{%% url vintage_detail url='%s' %%}" % ap.url
             except ArchivedPage.DoesNotExist:
                 pass
             tag['href'] = url
@@ -188,3 +184,44 @@ class ArchivedFile(models.Model):
         max_length=255,
         upload_to=get_upload_path,
         storage=STORAGE())
+
+
+if RELATIONS:
+    ARCHIVEDPAGE_RELATION_LIMITS = reduce(lambda x, y: x | y, RELATIONS)
+else:
+    ARCHIVEDPAGE_RELATION_LIMITS = []
+
+
+class ArchivedPageRelationManager(models.Manager):
+    def get_content_type(self, content_type):
+        """
+        Get all the items of the given content type related to this item.
+        """
+        qs = self.get_query_set()
+        return qs.filter(content_type__name=content_type)
+
+    def get_relation_type(self, relation_type):
+        """
+        Get all the items of the given relationship type related to this item.
+        """
+        qs = self.get_query_set()
+        return qs.filter(relation_type=relation_type)
+
+
+class ArchivedPageRelation(models.Model):
+    """Related item"""
+    archivedpage = models.ForeignKey(ArchivedPage)
+    content_type = models.ForeignKey(
+        ContentType, limit_choices_to=ARCHIVEDPAGE_RELATION_LIMITS)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    alias = models.CharField(_("Alias"),
+        max_length="200",
+        blank=True,
+        null=True,
+        help_text=_("A generic text field to tag a relation, like 'leadphoto'."))
+
+    objects = ArchivedPageRelationManager()
+
+    def __unicode__(self):
+        return u"ArchivedPageRelation"
