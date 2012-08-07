@@ -210,7 +210,7 @@ class ArchivedPageRelationManager(models.Manager):
 
 class ArchivedPageRelation(models.Model):
     """Related item"""
-    archivedpage = models.ForeignKey(ArchivedPage)
+    archivedpage = models.ForeignKey(ArchivedPage, related_name='relations')
     content_type = models.ForeignKey(
         ContentType, limit_choices_to=ARCHIVEDPAGE_RELATION_LIMITS)
     object_id = models.PositiveIntegerField()
