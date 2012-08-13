@@ -152,6 +152,28 @@ class ArchivedPage(models.Model):
         self.update_links(save=False)
         super(ArchivedPage, self).save(*args, **kwargs)
 
+    if RELATIONS:
+        def get_related_content_type(self, content_type):
+            """
+            Get all related items of the specified content type
+            """
+            return self.relations.filter(content_type__name=content_type)
+
+        def get_relation_type(self, relation_type):
+            """
+            Get all relations of the specified relation type
+            """
+            return self.relations.filter(relation_type__iexact=relation_type)
+
+        def get_content_object(self, field):
+            app_label, model = field[1].split('.')
+            ctype = ContentType.objects.get(app_label=app_label, model=model)
+            ar = self.get_related_content_type(ctype.name)
+            if len(ar) > 0:
+                return ar[0].content_object
+            else:
+                return None
+
 
 def get_upload_path(instance, filename):
     """
