@@ -163,7 +163,7 @@ class ArchivedPage(models.Model):
             """
             Get all relations of the specified relation type
             """
-            return self.relations.filter(relation_type__iexact=relation_type)
+            return self.relations.filter(alias__iexact=relation_type)
 
         def get_content_object(self, field):
             app_label, model = field[1].split('.')
